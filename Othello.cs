@@ -12,7 +12,7 @@ public class Othello {
         //Command line checking done via Driver
         this.size = p1;
         this.playerdisc = p3;
-        
+        initBoard();
     }
     //testme
     /*
