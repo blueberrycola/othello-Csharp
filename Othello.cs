@@ -43,6 +43,19 @@ namespace Othello
                 this.disc = WHITE;
             }
         }
+        //Returns true if and only if it is between 0 and size-1
+        public bool OuttaBounds(int i, int j)
+        {
+            if(i < 0 || j < 0)
+            {
+                return false;
+            }
+            if(i >= size || j >= size)
+            {
+                return false;
+            }
+            return true;
+        }
 
         /*
          Prints the board and its value 'B' is black, 'W' is white. X is empty
@@ -215,7 +228,7 @@ namespace Othello
         //END OF CLASS SCOPE
         //Methods todo:
         /*
-            checkdir +outofbounds?
+            checkdir
             isvalid_move
             placedisc
             isvalid_move_available
