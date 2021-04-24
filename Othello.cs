@@ -24,7 +24,7 @@ namespace Othello
         private int[] UP_RIGHT = { -1, 1 };
         private int[] DOWN_LEFT = { 1, -1 };
         private int[] DOWN_RIGHT = { 1, 1 };
-        //Constructor
+        //Constructor for Game, Error Checking done in main
         public Othello(int p1, int p2, char p3)
         {
             //Command line checking done via Driver
@@ -43,7 +43,9 @@ namespace Othello
                 this.disc = WHITE;
             }
         }
-        //Returns true if and only if it is between 0 and size-1. used by checkdirection
+        /*
+         * A useful function for when you are scanning thru board without a for loop to stop from going out of bounds
+         */
         public bool OuttaBounds(int i, int j)
         {
             if(i < 0 || j < 0)
@@ -59,13 +61,12 @@ namespace Othello
             return false;
         }
         /*
-         * Checks the direction given in the actual params. 
+         * Checks the direction given in the actual params. Used in ValidMove() and PlaceDisc()
          * returns true if a move can be placed
          */
         public bool CheckDirection(int i, int j, int[] dir)
         {
             bool done = false;
-            bool match = true;
             int r = i + dir[0];
             int c = j + dir[1];
             if(this.board[i,j] != EMPTY)
@@ -80,10 +81,7 @@ namespace Othello
             {
                 return false;
             }
-            
-
-
-
+            //Loop for checking a given directions
             while(!done)
             {
                 if(dir[0] == 1 && OuttaBounds(r, c))
@@ -197,7 +195,7 @@ namespace Othello
             return false;
         }
         /*
-         * Places disc at [i,j] in board. Initiates next turn
+         * Places disc at [i,j] in board. Finds pieces that are claimed by game rule. Initiates next turn
          */
         public void PlaceDisc(int i, int j)
         {
@@ -402,6 +400,8 @@ namespace Othello
                 Console.WriteLine();
             }
         }
+        /* If board is full and no valid moves availble for either disc, then it is game over.
+         */
         public bool GameOver()
         {
             if(BoardFull())
@@ -417,6 +417,9 @@ namespace Othello
              
             return false;
         }
+        /*
+         * Scans through entire board to check if all tiles are not EMPTY
+         */
         public bool BoardFull()
         {
             for(int i = 0; i < size; i++)
@@ -431,13 +434,16 @@ namespace Othello
             }
             return true;
         }
+        /*
+         * Checks the Winner of game, throws e if asked before game over
+         */
         public char CheckWinner()
         {
             int white = 0;
             int black = 0;
             if(!GameOver())
             {
-                return '0';
+                return 'e'; //Error char
             } else
             {
                 for(int i = 0; i < size; i++)
@@ -463,7 +469,7 @@ namespace Othello
             {
                 return WHITE;
             }
-            return 'T';
+            return TIE;
         }
         /*
         Initializes the board with blank sheets and provides values for the starting board based on size
@@ -484,7 +490,7 @@ namespace Othello
             this.board[size / 2, size / 2 - 1] = WHITE;
             this.board[size / 2, size / 2] = BLACK;
         }
-        //Driver Method for Othello
+        //Driver Main Method for Othello
         static void Main(string[] args)
         {
             Console.WriteLine("<<<Welcome to the game of Othello>>>");
