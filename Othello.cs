@@ -147,6 +147,22 @@ namespace Othello
             {
                 directioncheck = true;
             }
+            if(CheckDirection(i,j,UP_LEFT))
+            {
+                directioncheck = true;
+            }
+            if(CheckDirection(i,j,UP_RIGHT))
+            {
+                directioncheck = true;
+            }
+            if(CheckDirection(i,j,DOWN_LEFT))
+            {
+                directioncheck = true;
+            }
+            if(CheckDirection(i,j,DOWN_RIGHT))
+            {
+                directioncheck = true;
+            }
             
             if(directioncheck)
             {
