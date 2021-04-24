@@ -48,13 +48,15 @@ namespace Othello
         {
             if(i < 0 || j < 0)
             {
-                return false;
+                
+                return true;
             }
             if(i >= size || j >= size)
             {
-                return false;
+                
+                return true;
             }
-            return true;
+            return false;
         }
         /*
          * Checks the direction given in the actual params. 
@@ -62,12 +64,63 @@ namespace Othello
          */
         public bool CheckDirection(int i, int j, int[] dir)
         {
-            bool checking = true;
-            while(checking)
+            bool done = false;
+            bool match = true;
+            int r = i + dir[0];
+            int c = j + dir[1];
+            if(this.board[i,j] != EMPTY)
             {
-                //Check initial tile
-                
+                return false;
             }
+            if(OuttaBounds(r,c))
+            {
+                return false;
+            }
+            if(this.board[r,c] == disc)
+            {
+                return false;
+            }
+            
+
+
+
+            while(!done)
+            {
+                if(dir[0] == 1 && OuttaBounds(r, c))
+                {
+                    
+                    return false;
+                }
+                if(dir[0] == -1 && OuttaBounds(r, c))
+                {
+                    return false;
+                }
+                if(dir[1] == 1 && OuttaBounds(r,c))
+                {
+                    return false;
+                }
+                if (dir[1] == -1 && OuttaBounds(r, c))
+                {
+                    return false;
+                }
+                if (this.board[r, c] == disc)
+                {
+                    return true;
+                }
+                if (this.board[r,c] == EMPTY)
+                {
+                    return false;
+                }
+                
+                
+                r += dir[0];
+                c += dir[1];
+                if(OuttaBounds(r,c))
+                {
+                    done = true;
+                }
+            }
+
             return false;
         }
 
@@ -78,24 +131,63 @@ namespace Othello
         {
             bool directioncheck = false;
             //Check each direction using check dir and specified direction.
-            return true;
-        }
-        public void PlaceDisc(int i, int j, char disc)
-        {
-            //Check if IsValidMove
-            //Find every direction that qualifies
+            if(CheckDirection(i,j,UP))
+            {
+                directioncheck = true;
+            }
+            if(CheckDirection(i,j,DOWN))
+            {
+                directioncheck = true;
+            }
+            if(CheckDirection(i,j,LEFT))
+            {
+                directioncheck = true;
+            }
+            if(CheckDirection(i,j,RIGHT))
+            {
+                directioncheck = true;
+            }
+            
+            if(directioncheck)
+            {
+                return true;
+            }
+            return false;
         }
         /*
          * For loop that checks each tile and board and tells us if there is a valid move available on the board.
          */
         public bool IsValidMoveAvailable(char disc)
         {
-            
-            return true;
+            bool valid = false;
+            for(int i = 0; i < size; i++)
+            {
+                for(int j = 0; j < size; j++)
+                {
+                    if(IsValidMove(i, j))
+                    {
+                        Console.Write("Valid Move Found: ");
+                        Console.Write(i);
+                        Console.Write(SPACE);
+                        Console.WriteLine(j);
+                        valid = true;
+                    }
+                }
+            }
+            if(valid)
+            {
+                return true;
+            }
+            return false;
         }
         /*
          * Places disc at [i,j] in board. Initiates next turn
          */
+        public void PlaceDisc(int i, int j)
+        {
+            //Place disc at location, IsValidMove+Available already used in Main
+            this.board[i, j] = this.disc;
+        }
 
         /*
          Prints the board and its value 'B' is black, 'W' is white. X is empty
@@ -133,10 +225,13 @@ namespace Othello
             {
                 return true;
             }
-            /*
-             * if(!isValidMoveAvailable(BLACK) && !isValidMoveAvailable(WHITE)
-             *      return true;
-             */
+            
+              if(!IsValidMoveAvailable(BLACK) && !IsValidMoveAvailable(WHITE))
+            {
+                return true;
+            }
+                   
+             
             return false;
         }
         public bool BoardFull()
@@ -261,19 +356,20 @@ namespace Othello
                     game.NextTurn();
                 } else
                 {
-                    //Else ask for user input of disc location
-                    //Input loop
+                    //User Input loop
                     bool valid = false;
+                    int row = 0;
+                    int col = 0;
                     while(!valid)
                     {
 
                         Console.WriteLine("Your turn. Please enter a coordinate:");
                         string[] input = Console.ReadLine().Split();
-                        int row = int.Parse(input[0]);
-                        int col = int.Parse(input[1]);
-                        valid = true;
+                        row = int.Parse(input[0]);
+                        col = int.Parse(input[1]);
+                        
                         //If invalid or outtabounds, ask for input again
-                        if (!game.OuttaBounds(row, col))
+                        if (game.OuttaBounds(row, col))
                         {
                             Console.WriteLine("Your input is out of bounds try again:");
                             input = Console.ReadLine().Split();
@@ -283,10 +379,14 @@ namespace Othello
                         {
                             Console.WriteLine("Your input is not a valid move try again:");
                             valid = false;
+                        } else
+                        {
+                            valid = true;
                         }
                     }
                     //Input is valid, place disc on board
-                    //Call NextTurn()
+                    game.PlaceDisc(row, col);
+                    game.NextTurn();
                     //Implement testing for all methods up to here
 
                 }
@@ -297,6 +397,7 @@ namespace Othello
             //Once game is over print final board
             //CheckWinner
             //Print victory/tie/loss String
+            //Test last of methods, simulate game
             //Close program
 
         }
