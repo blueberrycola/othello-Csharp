@@ -43,7 +43,7 @@ namespace Othello
                 this.disc = WHITE;
             }
         }
-        //Returns true if and only if it is between 0 and size-1
+        //Returns true if and only if it is between 0 and size-1. used by checkdirection
         public bool OuttaBounds(int i, int j)
         {
             if(i < 0 || j < 0)
@@ -56,6 +56,46 @@ namespace Othello
             }
             return true;
         }
+        /*
+         * Checks the direction given in the actual params. 
+         * returns true if a move can be placed
+         */
+        public bool CheckDirection(int i, int j, int[] dir)
+        {
+            bool checking = true;
+            while(checking)
+            {
+                //Check initial tile
+                
+            }
+            return false;
+        }
+
+        /*
+         * Determines if the tile in board[i,j] contains a direction that makes the move valid.
+         */
+        public bool IsValidMove(int i, int j)
+        {
+            bool directioncheck = false;
+            //Check each direction using check dir and specified direction.
+            return true;
+        }
+        public void PlaceDisc(int i, int j, char disc)
+        {
+            //Check if IsValidMove
+            //Find every direction that qualifies
+        }
+        /*
+         * For loop that checks each tile and board and tells us if there is a valid move available on the board.
+         */
+        public bool IsValidMoveAvailable(char disc)
+        {
+            
+            return true;
+        }
+        /*
+         * Places disc at [i,j] in board. Initiates next turn
+         */
 
         /*
          Prints the board and its value 'B' is black, 'W' is white. X is empty
@@ -206,17 +246,53 @@ namespace Othello
             }
             Console.WriteLine("Starting game...");
             Othello game = new Othello(num, num, disc);
+            Console.Write("Player 1: ");
+            Console.WriteLine(disc);
+            
             
             //Game Loop
             while(!game.GameOver())
             {
                 game.PrintBoard();
+                //If invalid place disc for all tiles, change turn.
+                if (!game.IsValidMoveAvailable(game.disc))
+                {
+                    Console.WriteLine("No valid moves available disc. You lose 1 turn");
+                    game.NextTurn();
+                } else
+                {
+                    //Else ask for user input of disc location
+                    //Input loop
+                    bool valid = false;
+                    while(!valid)
+                    {
 
-                //Print board
-                //Check if valid move available. If no valid move change turn twice.
-                //Else ask for user input of disc location
-                //If invalid, outofbounds, or not valid ask again
-                //If valid place disc and change turn.
+                        Console.WriteLine("Your turn. Please enter a coordinate:");
+                        string[] input = Console.ReadLine().Split();
+                        int row = int.Parse(input[0]);
+                        int col = int.Parse(input[1]);
+                        valid = true;
+                        //If invalid or outtabounds, ask for input again
+                        if (!game.OuttaBounds(row, col))
+                        {
+                            Console.WriteLine("Your input is out of bounds try again:");
+                            input = Console.ReadLine().Split();
+                            valid = false;
+                        }
+                        if (!game.IsValidMove(row, col))
+                        {
+                            Console.WriteLine("Your input is not a valid move try again:");
+                            valid = false;
+                        }
+                    }
+                    //Input is valid, place disc on board
+                    //Call NextTurn()
+                    //Implement testing for all methods up to here
+
+                }
+                
+                
+                
             }
             //Once game is over print final board
             //CheckWinner
