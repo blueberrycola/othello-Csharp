@@ -5,7 +5,7 @@ namespace Othello
     {
         //Othello State Variables
         private int size;
-        private char playerdisc;
+        private char disc;
         private char[,] board;
 
         //Board Values
@@ -29,9 +29,21 @@ namespace Othello
         {
             //Command line checking done via Driver
             this.size = p1;
-            this.playerdisc = p3;
+            this.disc = p3;
             InitBoard(p1); //Initialize Board with starting values
         }
+        // Iterates next turn in othello. Used twice if no valid moves available for next player
+        public void NextTurn()
+        {
+            if(this.disc == WHITE)
+            {
+                this.disc = BLACK;
+            } else
+            {
+                this.disc = WHITE;
+            }
+        }
+
         /*
          Prints the board and its value 'B' is black, 'W' is white. X is empty
          An index vertical and horizontal based on board[][] is also printed
@@ -39,7 +51,7 @@ namespace Othello
         */
         public void PrintBoard()
         {
-            //Create index vertically as first line
+            //Create index horizontally as first line
             Console.Write(SPACE);
             Console.Write(SPACE);
             for(int i = 0; i < size; i++)
@@ -48,8 +60,10 @@ namespace Othello
                 Console.Write(SPACE);
             }
             Console.WriteLine();
+            //Draw board + vertical index
             for(int i = 0; i < size; i++)
             {
+                //Create index vertically
                 Console.Write(i);
                 Console.Write(SPACE);
                 for(int j = 0; j < size; j++)
@@ -62,17 +76,62 @@ namespace Othello
         }
         public bool GameOver()
         {
-            //FIXME: add method
+            if(BoardFull())
+            {
+                return true;
+            }
+            /*
+             * if(!isValidMoveAvailable(BLACK) && !isValidMoveAvailable(WHITE)
+             *      return true;
+             */
             return false;
         }
         public bool BoardFull()
         {
-            //FIXME: add method
-            return false;
+            for(int i = 0; i < size; i++)
+            {
+                for(int j = 0; j < size; j++)
+                {
+                    if(board[i,j] == EMPTY)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
         public char CheckWinner()
         {
-            //FIXME: add method
+            int white = 0;
+            int black = 0;
+            if(!GameOver())
+            {
+                return '0';
+            } else
+            {
+                for(int i = 0; i < size; i++)
+                {
+                    for(int j = 0; j < size; j++)
+                    {
+                        if(board[i,j] == BLACK)
+                        {
+                            black++;
+                        }
+                        if(board[i,j] == WHITE)
+                        {
+                            white++;
+                        }
+                    }
+                }
+            }
+            if(white < black)
+            {
+                return BLACK;
+            }
+            if(black < white)
+            {
+                return WHITE;
+            }
             return 'T';
         }
         /*
@@ -119,7 +178,7 @@ namespace Othello
                 }
                 Console.WriteLine("Please enter B or W for player color");
                 string p = Console.ReadLine();
-                if(p == "B" && !discenter)
+                if((p == "B" || p == "W") && !discenter)
                 {
                     disc = Char.Parse(p);
                     discenter = true;
@@ -132,17 +191,19 @@ namespace Othello
                     doneInput = true;
                 }
             }
-            
+            Console.WriteLine("Starting game...");
             Othello game = new Othello(num, num, disc);
-            game.PrintBoard();
+            
             //Game Loop
             while(!game.GameOver())
             {
+                game.PrintBoard();
+
                 //Print board
                 //Check if valid move available. If no valid move change turn twice.
                 //Else ask for user input of disc location
-                    //If invalid, outofbounds, or not valid ask again
-                    //If valid place disc and change turn.
+                //If invalid, outofbounds, or not valid ask again
+                //If valid place disc and change turn.
             }
             //Once game is over print final board
             //CheckWinner
@@ -158,9 +219,7 @@ namespace Othello
             isvalid_move
             placedisc
             isvalid_move_available
-            isboardfull
-            isgameover
-            checkwinner
+
 
         */
     }
