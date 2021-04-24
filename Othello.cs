@@ -202,7 +202,174 @@ namespace Othello
         public void PlaceDisc(int i, int j)
         {
             //Place disc at location, IsValidMove+Available already used in Main
-            this.board[i, j] = this.disc;
+
+            bool upcheck = CheckDirection(i, j, UP);
+            bool downcheck = CheckDirection(i, j, DOWN);
+            bool leftcheck = CheckDirection(i, j, LEFT);
+            bool rightcheck = CheckDirection(i, j, RIGHT);
+            bool upleftcheck = CheckDirection(i, j, UP_LEFT);
+            bool uprightcheck = CheckDirection(i, j, UP_RIGHT);
+            bool downleftcheck = CheckDirection(i, j, DOWN_LEFT);
+            bool downrightcheck = CheckDirection(i, j, DOWN_RIGHT);
+            
+            if (upcheck)
+            {
+                for(int row = i-1; row > 0; row--)
+                {
+                    if(board[row,j] == disc)
+                    {
+                        break;
+                    }
+                    if(board[row,j] != disc && board[row,j] != EMPTY)
+                    {
+                        board[row, j] = disc;
+                    }
+                }
+                
+
+            }
+            
+            if (downcheck)
+            {
+                for(int row = i+1; row < size; row++)
+                {
+                    if (board[row, j] == disc)
+                    {
+                        break;
+                    }
+                    if (board[row, j] != disc && board[row, j] != EMPTY)
+                    {
+                        board[row, j] = disc;
+                    }
+                }
+                
+            }
+            if(leftcheck)
+            {
+                for(int col = j-1; col > 0; col--)
+                {
+                    if (board[i, col] == disc)
+                    {
+                        break;
+                    }
+                    if (board[i, col] != disc && board[i, col] != EMPTY)
+                    {
+                        board[i, col] = disc;
+                    }
+                }
+            }
+            if(rightcheck)
+            {
+                for(int col = j+1; col < size; col++)
+                {
+                    if (board[i, col] == disc)
+                    {
+                        break;
+                    }
+                    if (board[i, col] != disc && board[i, col] != EMPTY)
+                    {
+                        board[i, col] = disc;
+                    }
+                }
+            }
+            if(upleftcheck)
+            {
+                int row = i - 1;
+                int col = j - 1;
+                bool done = false;
+                while(!done)
+                {
+                    if(OuttaBounds(row, col))
+                    {
+                        done = true;
+                    }
+                    if(board[row, col] == disc)
+                    {
+                        done = true;
+                    }
+                    if(board[row,col] != disc && board[row,col] != EMPTY)
+                    {
+                        board[row, col] = disc;
+                    }
+                    row--;
+                    col--;
+                }
+            }
+            if(uprightcheck)
+            {
+                int row = i - 1;
+                int col = j + 1;
+                bool done = false;
+                while(!done)
+                {
+                    if (OuttaBounds(row, col))
+                    {
+                        done = true;
+                    }
+                    if (board[row, col] == disc)
+                    {
+                        done = true;
+                    }
+                    if (board[row, col] != disc && board[row, col] != EMPTY)
+                    {
+                        board[row, col] = disc;
+                    }
+                    row--;
+                    col++;
+                }
+            }
+            if(downleftcheck)
+            {
+                int row = i + 1;
+                int col = j - 1;
+                bool done = false;
+                while(!done)
+                {
+                    if (OuttaBounds(row, col))
+                    {
+                        done = true;
+                    }
+                    if (board[row, col] == disc)
+                    {
+                        done = true;
+                    }
+                    if (board[row, col] != disc && board[row, col] != EMPTY)
+                    {
+                        board[row, col] = disc;
+                    }
+                    row++;
+                    col--;
+                }
+
+
+            }
+            if(downrightcheck)
+            {
+                int row = i + 1;
+                int col = j + 1;
+                bool done = false;
+                while(!done)
+                {
+                    if (OuttaBounds(row, col))
+                    {
+                        done = true;
+                    }
+                    if (board[row, col] == disc)
+                    {
+                        done = true;
+                    }
+                    if (board[row, col] != disc && board[row, col] != EMPTY)
+                    {
+                        board[row, col] = disc;
+                    }
+                    row++;
+                    col++;
+                }
+            }
+            //Place disc at requested coord after applying claimed discs.
+            board[i, j] = disc;
+
+
         }
 
         /*
@@ -410,24 +577,13 @@ namespace Othello
                 
                 
             }
-            //Once game is over print final board
-            //CheckWinner
-            //Print victory/tie/loss String
-            //Test last of methods, simulate game
-            //Close program
+            game.PrintBoard();
+            Console.Write("The winner of Othello is: ");
+            Console.WriteLine(game.CheckWinner());
+            
 
         }
-
-        //END OF CLASS SCOPE
-        //Methods todo:
-        /*
-            checkdir
-            isvalid_move
-            placedisc
-            isvalid_move_available
-
-
-        */
+        
     }
 }
 
